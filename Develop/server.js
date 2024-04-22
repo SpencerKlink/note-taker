@@ -1,28 +1,25 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
-
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/notes', (req, res) => {
+app.get('/notes', (_, res) => {
   res.sendFile(path.join(__dirname, 'public', 'notes.html'));
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// API routes
-app.get('/api/notes', (req, res) => {
+app.get('/api/notes', (_, res) => {
   fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf8', (err, data) => {
     if (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).send({ error: "Internal Server Error" });
       return;
     }
     res.json(JSON.parse(data));
@@ -32,18 +29,15 @@ app.get('/api/notes', (req, res) => {
 app.post('/api/notes', (req, res) => {
   fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf8', (err, data) => {
     if (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).send({ error: "Internal Server Error" });
       return;
     }
     const notes = JSON.parse(data);
-    const newNote = req.body;
-    newNote.id = notes.length + 1; // Generate unique ID
+    const newNote = { ...req.body, id: notes.length + 1 }; 
     notes.push(newNote);
     fs.writeFile(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes, null, 2), (err) => {
       if (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).send({ error: "Internal Server Error" });
         return;
       }
       res.json(newNote);
@@ -51,6 +45,10 @@ app.post('/api/notes', (req, res) => {
   });
 });
 
+app.get('*', (_, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 app.listen(PORT, () => {
-  console.log(`Server listening on PORT ${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
