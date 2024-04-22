@@ -46,7 +46,7 @@ app.post('/api/notes', (req, res) => {
 });
 
 app.delete('/api/notes/:id', (req, res) => {
-  const noteId = req.params.id;  // Get the ID of the note to delete from the URL parameters
+  const noteId = req.params.id; 
 
   fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf8', (err, data) => {
       if (err) {
@@ -55,7 +55,7 @@ app.delete('/api/notes/:id', (req, res) => {
           return;
       }
       let notes = JSON.parse(data);
-      notes = notes.filter(note => note.id !== parseInt(noteId));  // Remove the note with the given ID
+      notes = notes.filter(note => note.id !== parseInt(noteId));  
 
       fs.writeFile(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes, null, 2), (err) => {
           if (err) {
