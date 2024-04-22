@@ -46,5 +46,4 @@ What you need to install the software:
 
 
 ## WEB LINK 
-- (REMINDER THIS WILL NOT WORK UNLESS YOU HAVE THE SERVER UP AND RUNNING)
-- 
+- https://safe-scrubland-76270-f24f37ab1a96.herokuapp.com/notes
