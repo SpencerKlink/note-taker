@@ -4,7 +4,7 @@ Note Taker is a simple web application that allows users to create, view, and de
 
 # Screenshot Of Application
 
- ![alt text](develop/public/assets/images/NOTES.jpeg "screenshot of site")
+ ![alt text](public/assets/images/NOTES.jpeg "screenshot of site")
 
 ## Features
 
